@@ -1,0 +1,17 @@
+# OS metadata
+._*
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pkl
+
+# Raw large datasets
+Data Pack/
+*.csv.gz
+
+# Node / Temp
+node_modules/
+.vscode/
