@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rajasthan Royals — SupeRR Selector S2: Pressure Performance Dashboard</title>
+  <!-- Tailwind CSS & Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rrPink: '#D81B60',
+            rrPinkLight: '#FF4081',
+            rrNavy: '#0B132B',
+            rrNavyCard: '#1C2541',
+            rrBlue: '#1B365D',
+            rrGold: '#F59E0B',
+            rrGoldLight: '#FBBF24',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0B132B; color: #F8FAFC; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass-card { background: rgba(28, 37, 65, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .tab-active { background-color: #D81B60; color: #FFFFFF; font-weight: 600; }
+    .tab-inactive { background-color: rgba(255, 255, 255, 0.05); color: #94A3B8; }
+    .tab-inactive:hover { background-color: rgba(255, 255, 255, 0.1); color: #FFFFFF; }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+
+  <!-- TOP BRANDING BAR -->
+  <header class="border-b border-white/10 bg-rrNavy/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rrPink to-rrBlue flex items-center justify-center font-bold text-xl shadow-lg shadow-rrPink/20 text-white">
+          RR
+        </div>
+        <div>
+          <h1 class="text-lg font-bold font-display tracking-tight text-white flex items-center gap-2">
+            RAJASTHAN ROYALS <span class="text-xs bg-rrGold text-black px-2 py-0.5 rounded-full font-semibold">SupeRR Selector S2</span>
+          </h1>
+          <p class="text-xs text-slate-400">Pressure Performance Analytics & IPL 2027 Auction Intelligence</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-slate-400 hidden sm:inline">War Room Submission by Data Analytics Team</span>
+        <div class="px-3 py-1 rounded-lg bg-rrPink/20 border border-rrPink/30 text-rrPinkLight text-xs font-semibold">
+          Round 1 Finalist Model
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO KPI STATS -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+      <div class="glass-card p-4 rounded-xl border-l-4 border-rrPink">
+        <div class="text-xs text-slate-400 uppercase font-semibold">Deliveries Analyzed</div>
+        <div class="text-2xl font-extrabold font-display text-white mt-1">200,999</div>
+        <div class="text-xs text-emerald-400 mt-0.5">867 Matches (2022–2026)</div>
+      </div>
+      <div class="glass-card p-4 rounded-xl border-l-4 border-rrGold">
+        <div class="text-xs text-slate-400 uppercase font-semibold">Pressure Balls</div>
+        <div class="text-2xl font-extrabold font-display text-rrGold mt-1">69,734</div>
+        <div class="text-xs text-slate-400 mt-0.5">34.7% High-Leverage Phase</div>
+      </div>
+      <div class="glass-card p-4 rounded-xl border-l-4 border-blue-500">
+        <div class="text-xs text-slate-400 uppercase font-semibold">Pressure Wicket Rate</div>
+        <div class="text-2xl font-extrabold font-display text-blue-400 mt-1">5.82%</div>
+        <div class="text-xs text-pink-400 mt-0.5">+38% Higher Wicket Hazard</div>
+      </div>
+      <div class="glass-card p-4 rounded-xl border-l-4 border-purple-500">
+        <div class="text-xs text-slate-400 uppercase font-semibold">#1 Ranked Batter</div>
+        <div class="text-lg font-bold font-display text-white mt-1.5 truncate">Shashank Singh</div>
+        <div class="text-xs text-emerald-400 mt-0.5">+67.7 SR Delta | 63.4 Avg</div>
+      </div>
+      <div class="glass-card p-4 rounded-xl border-l-4 border-emerald-500">
+        <div class="text-xs text-slate-400 uppercase font-semibold">#1 Ranked Bowler</div>
+        <div class="text-lg font-bold font-display text-white mt-1.5 truncate">Rashid Khan</div>
+        <div class="text-xs text-emerald-400 mt-0.5">7.38 Econ | 83 Press Wkts</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAVIGATION TABS -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+    <div class="flex overflow-x-auto gap-2 pb-2 border-b border-white/10 no-scrollbar">
+      <button onclick="switchTab('batters')" id="tab-batters" class="tab-active px-5 py-2.5 rounded-lg text-sm transition-all whitespace-nowrap">
+        🏏 Top 10 Batters
+      </button>
+      <button onclick="switchTab('bowlers')" id="tab-bowlers" class="tab-inactive px-5 py-2.5 rounded-lg text-sm transition-all whitespace-nowrap">
+        🎳 Top 10 Bowlers
+      </button>
+      <button onclick="switchTab('quadrants')" id="tab-quadrants" class="tab-inactive px-5 py-2.5 rounded-lg text-sm transition-all whitespace-nowrap">
+        📊 Clutch Delta Quadrants
+      </button>
+      <button onclick="switchTab('squad')" id="tab-squad" class="tab-inactive px-5 py-2.5 rounded-lg text-sm transition-all whitespace-nowrap">
+        🎯 RR Auction Roadmap
+      </button>
+      <button onclick="switchTab('methodology')" id="tab-methodology" class="tab-inactive px-5 py-2.5 rounded-lg text-sm transition-all whitespace-nowrap">
+        📐 Methodology & Logic
+      </button>
+    </div>
+  </section>
+
+  <!-- TAB CONTENT CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+
+    <!-- TAB 1: BATTERS -->
+    <div id="content-batters" class="space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 class="text-xl font-bold font-display text-white">Top 10 Batters Under Pressure (BPS Model)</h2>
+          <p class="text-xs text-slate-400">Ranked by Batting Pressure Score balancing Absolute Output, Clutch Delta (&Delta;SR), Volume, and Consistency.</p>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <span class="text-slate-400">Unstop Dropdown Match:</span>
+          <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-1 rounded">100% Eligible & Verified</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Table -->
+        <div class="lg:col-span-2 glass-card rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-rrPink text-white font-bold uppercase text-[11px]">
+                <tr>
+                  <th class="p-3 text-center">Rank</th>
+                  <th class="p-3">Player Name</th>
+                  <th class="p-3 text-center">Nat</th>
+                  <th class="p-3 text-center">Press Balls</th>
+                  <th class="p-3 text-center">Base SR</th>
+                  <th class="p-3 text-center">Press SR</th>
+                  <th class="p-3 text-center">&Delta; SR</th>
+                  <th class="p-3 text-center">Press Avg</th>
+                  <th class="p-3 text-center">BPS</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5" id="batters-tbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Selected Player Card / Radar Chart -->
+        <div class="glass-card p-5 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="text-xs text-rrGold font-semibold uppercase tracking-wider">Spotlight Player Analysis</div>
+            <h3 id="bat-card-name" class="text-xl font-extrabold font-display text-white mt-1">Shashank Singh</h3>
+            <div id="bat-card-role" class="text-xs text-slate-400 mt-0.5">Finisher (No.6/7) &bull; India</div>
+
+            <div class="grid grid-cols-3 gap-2 mt-4">
+              <div class="bg-white/5 p-2 rounded-lg text-center">
+                <div class="text-[10px] text-slate-400">Press SR</div>
+                <div id="bat-card-sr" class="text-sm font-bold text-rrPinkLight mt-0.5">176.0</div>
+              </div>
+              <div class="bg-white/5 p-2 rounded-lg text-center">
+                <div class="text-[10px] text-slate-400">&Delta; SR Lift</div>
+                <div id="bat-card-delta" class="text-sm font-bold text-emerald-400 mt-0.5">+67.7</div>
+              </div>
+              <div class="bg-white/5 p-2 rounded-lg text-center">
+                <div class="text-[10px] text-slate-400">Press Avg</div>
+                <div id="bat-card-avg" class="text-sm font-bold text-rrGold mt-0.5">63.4</div>
+              </div>
+            </div>
+
+            <p id="bat-card-desc" class="text-xs text-slate-300 mt-4 leading-relaxed">
+              The clear statistical marvel of the dataset. Faced 396 pressure deliveries, elevating his strike rate from 108.3 to an astonishing 176.0 with 45 sixes. Solves RR's lower-order finishing void at a fraction of marquee price.
+            </p>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-white/10">
+            <div class="text-[11px] text-slate-400 font-semibold mb-2">RR Tactical Value Proposition:</div>
+            <div id="bat-card-rr" class="text-xs text-pink-200 bg-rrPink/10 p-2.5 rounded-lg border border-rrPink/20">
+              Target ₹4–6 Cr at auction. Frees overseas slots for pace spearheads.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: BOWLERS -->
+    <div id="content-bowlers" class="hidden space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 class="text-xl font-bold font-display text-white">Top 10 Bowlers Under Pressure (BPS_bowl Model)</h2>
+          <p class="text-xs text-slate-400">Ranked by Bowling Pressure Score balancing Run Suppression, Wickets, Clutch Tightening (&Delta;Econ), and Dot Ball %.</p>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <span class="text-slate-400">Unstop Dropdown Match:</span>
+          <span class="bg-blue-500/20 text-blue-300 border border-blue-500/30 px-2 py-1 rounded">100% Eligible & Verified</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Table -->
+        <div class="lg:col-span-2 glass-card rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-rrBlue text-white font-bold uppercase text-[11px]">
+                <tr>
+                  <th class="p-3 text-center">Rank</th>
+                  <th class="p-3">Player Name</th>
+                  <th class="p-3 text-center">Nat</th>
+                  <th class="p-3 text-center">Press Balls</th>
+                  <th class="p-3 text-center">Base Econ</th>
+                  <th class="p-3 text-center">Press Econ</th>
+                  <th class="p-3 text-center">&Delta; Econ</th>
+                  <th class="p-3 text-center">Press Wkts</th>
+                  <th class="p-3 text-center">BPS_bowl</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5" id="bowlers-tbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Selected Bowler Card -->
+        <div class="glass-card p-5 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="text-xs text-rrGold font-semibold uppercase tracking-wider">Spotlight Bowler Analysis</div>
+            <h3 id="bowl-card-name" class="text-xl font-extrabold font-display text-white mt-1">Rashid Khan</h3>
+            <div id="bowl-card-role" class="text-xs text-slate-400 mt-0.5">Leg-Spin Match-Winner &bull; Afghanistan</div>
+
+            <div class="grid grid-cols-3 gap-2 mt-4">
+              <div class="bg-white/5 p-2 rounded-lg text-center">
+                <div class="text-[10px] text-slate-400">Press Econ</div>
+                <div id="bowl-card-econ" class="text-sm font-bold text-blue-400 mt-0.5">7.38</div>
+              </div>
+              <div class="bg-white/5 p-2 rounded-lg text-center">
+                <div class="text-[10px] text-slate-400">&Delta; Tightening</div>
+                <div id="bowl-card-delta" class="text-sm font-bold text-emerald-400 mt-0.5">+0.17</div>
+              </div>
+              <div class="bg-white/5 p-2 rounded-lg text-center">
+                <div class="text-[10px] text-slate-400">Press Wkts</div>
+                <div id="bowl-card-wkts" class="text-sm font-bold text-rrGold mt-0.5">83</div>
+              </div>
+            </div>
+
+            <p id="bowl-card-desc" class="text-xs text-slate-300 mt-4 leading-relaxed">
+              The premier pressure spinner in modern cricket. Across 1,182 pressure deliveries, his economy tightens from 7.55 to 7.38 while claiming 83 wickets. Guarantees 4 overs of suffocating control in any contest.
+            </p>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-white/10">
+            <div class="text-[11px] text-slate-400 font-semibold mb-2">RR Tactical Value Proposition:</div>
+            <div id="bowl-card-rr" class="text-xs text-blue-200 bg-blue-900/20 p-2.5 rounded-lg border border-blue-500/20">
+              Universal anchor. Complements Jaipur's large square boundaries at Sawai Mansingh Stadium.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: QUADRANTS -->
+    <div id="content-quadrants" class="hidden space-y-6">
+      <div class="glass-card p-6 rounded-xl">
+        <h2 class="text-xl font-bold font-display text-white">Clutch Delta Quadrant Analysis</h2>
+        <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+          The quadrant chart demonstrates why evaluating players against their baseline matters. Players in the <b>Top-Right (Batting)</b> and <b>Top-Left (Bowling)</b> represent genuine pressure performers who elevate beyond standard match situations.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div class="glass-card p-4 rounded-xl">
+            <h3 class="text-sm font-bold text-rrPink flex items-center gap-2">
+              <span>🏏</span> Batters: Baseline SR vs Clutch &Delta;SR Lift
+            </h3>
+            <p class="text-[11px] text-slate-400 mt-0.5">Top-Right quadrant captures players with strong base strike rates who accelerate further under pressure.</p>
+            <div class="h-64 mt-4">
+              <canvas id="batQuadrantChart"></canvas>
+            </div>
+          </div>
+
+          <div class="glass-card p-4 rounded-xl">
+            <h3 class="text-sm font-bold text-blue-400 flex items-center gap-2">
+              <span>🎳</span> Bowlers: Baseline Econ vs Clutch Tightening
+            </h3>
+            <p class="text-[11px] text-slate-400 mt-0.5">Top-Left quadrant captures bowlers with sub-8.0 baseline economy who tighten further under pressure.</p>
+            <div class="h-64 mt-4">
+              <canvas id="bowlQuadrantChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: RR AUCTION ROADMAP -->
+    <div id="content-squad" class="hidden space-y-6">
+      <div class="glass-card p-6 rounded-xl">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h2 class="text-xl font-bold font-display text-white">Rajasthan Royals — IPL 2027 Auction Roadmap</h2>
+            <p class="text-xs text-slate-400 mt-1">Tiered bidding strategy to solve RR's death bowling deficit and finishing void.</p>
+          </div>
+          <div class="text-xs bg-rrGold/20 text-rrGold px-3 py-1.5 rounded-lg border border-rrGold/30 font-semibold">
+            Estimated Purse Target: ₹120 Cr Window
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+          <!-- Tier 1 -->
+          <div class="glass-card p-5 rounded-xl border-t-4 border-rrPink flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-rrPink uppercase tracking-wider">Tier 1: Non-Negotiable Core</span>
+                <span class="text-[10px] bg-rrPink/20 text-white px-2 py-0.5 rounded">High Priority</span>
+              </div>
+              <h3 class="text-base font-bold text-white mt-2">Arshdeep Singh &bull; Jasprit Bumrah &bull; SKY</h3>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Spearheads who permanently solve the 17–20 over deficit. Arshdeep's 99 pressure wickets lead the entire 200K dataset.
+              </p>
+            </div>
+            <div class="mt-6 pt-3 border-t border-white/10 text-xs font-semibold text-rrGold">
+              Target Bidding: ₹12–16 Cr Ceiling
+            </div>
+          </div>
+
+          <!-- Tier 2 -->
+          <div class="glass-card p-5 rounded-xl border-t-4 border-blue-500 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Tier 2: Specialist Clutch</span>
+                <span class="text-[10px] bg-blue-500/20 text-white px-2 py-0.5 rounded">High Value</span>
+              </div>
+              <h3 class="text-base font-bold text-white mt-2">Shashank Singh &bull; Pathirana &bull; Naman Dhir</h3>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Shashank's +67.7 SR delta and Pathirana's 7.94 slingy death economy provide elite clutch impact at reasonable purse hits.
+              </p>
+            </div>
+            <div class="mt-6 pt-3 border-t border-white/10 text-xs font-semibold text-rrGold">
+              Target Bidding: ₹4–9 Cr Bracket
+            </div>
+          </div>
+
+          <!-- Tier 3 -->
+          <div class="glass-card p-5 rounded-xl border-t-4 border-slate-500 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tier 3: Smart Tactical Depth</span>
+                <span class="text-[10px] bg-slate-500/20 text-white px-2 py-0.5 rounded">Bargain Steals</span>
+              </div>
+              <h3 class="text-base font-bold text-white mt-2">Ashutosh Sharma &bull; Akeal Hosein &bull; Ferreira</h3>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Ashutosh hit 36 sixes in 305 pressure balls; Akeal boasts a 6.09 pressure economy. Ideal Impact Sub and SMS stadium counters.
+              </p>
+            </div>
+            <div class="mt-6 pt-3 border-t border-white/10 text-xs font-semibold text-rrGold">
+              Target Bidding: ₹1.5–3.5 Cr Bracket
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: METHODOLOGY -->
+    <div id="content-methodology" class="hidden space-y-6">
+      <div class="glass-card p-6 rounded-xl space-y-6">
+        <div>
+          <h2 class="text-xl font-bold font-display text-white">Methodology, Mathematical Architecture & Governance</h2>
+          <p class="text-xs text-slate-400 mt-1">Reproducible scientific framework constructed for the Rajasthan Royals Analytics War Room.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-black/30 p-4 rounded-xl border border-white/5 space-y-2">
+            <h3 class="text-sm font-bold text-rrPink">Batting Pressure Score (BPS) Formula</h3>
+            <p class="text-xs text-slate-300 font-mono bg-white/5 p-3 rounded leading-relaxed">
+              BPS = 0.25 &middot; Z(SR_press) + 0.15 &middot; Z(Avg_press) + 0.25 &middot; Z(&Delta;SR) + 0.10 &middot; Z(&Delta;Bndry%) + 0.15 &middot; Z(log(Vol)) - 0.10 &middot; Z(CV_press)
+            </p>
+            <p class="text-[11px] text-slate-400 leading-normal">
+              Balances raw strike rate under pressure with relative elevation over individual baseline. Logarithmic volume scaling rewards verified workloads while CV penalizes boom-or-bust inconsistency.
+            </p>
+          </div>
+
+          <div class="bg-black/30 p-4 rounded-xl border border-white/5 space-y-2">
+            <h3 class="text-sm font-bold text-blue-400">Bowling Pressure Score (BPS_bowl) Formula</h3>
+            <p class="text-xs text-slate-300 font-mono bg-white/5 p-3 rounded leading-relaxed">
+              BPS_bowl = -0.25 &middot; Z(Econ_press) + 0.20 &middot; Z(Wkts_press) + 0.15 &middot; Z(&Delta;Econ) + 0.15 &middot; Z(Dot%_press) - 0.15 &middot; Z(SR_press) + 0.10 &middot; Z(log(Vol))
+            </p>
+            <p class="text-[11px] text-slate-400 leading-normal">
+              Negative Z-score applied to economy (lower is superior). Rewards bowlers who tighten their economy rate (&Delta;Econ) and generate high dot-ball percentages under pressure.
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-white/10">
+          <h4 class="text-xs font-bold uppercase text-rrGold">IPL Eligibility & Fair Comparison Rules:</h4>
+          <ul class="text-xs text-slate-300 mt-2 space-y-1.5 list-disc list-inside">
+            <li><b>Sample Threshold:</b> Minimum 60 pressure balls and 180 total balls across 2022–2026.</li>
+            <li><b>BCCI Policy Filter:</b> Pakistani players (e.g., Babar Azam, Sufiyan Muqeem) excluded from auction targets.</li>
+            <li><b>Retirement Screening:</b> Retired stars (Dinesh Karthik, Pollard) replaced with active targets (Donovan Ferreira).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const battersData = [
+      { rank: 1, name: 'Shashank Singh', role: 'Finisher (No.6/7)', nat: 'IND', balls: 396, baseSR: 108.3, pressSR: 176.0, deltaSR: 67.7, avg: 63.4, bps: 2.054, desc: 'The clear statistical marvel of the dataset. Faced 396 pressure deliveries, elevating strike rate by +67.7 while averaging 63.4 with 45 sixes.', rr: 'Target ₹4–6 Cr. Solves RR lower-order death finishing permanently.' },
+      { rank: 2, name: 'Ashutosh Sharma', role: 'Lower Disruptor', nat: 'IND', balls: 305, baseSR: 96.9, pressSR: 168.9, deltaSR: 72.0, avg: 27.1, bps: 1.503, desc: 'Highest strike-rate elevation (+72.0 SR delta) in the entire dataset. Hit 36 sixes in 305 pressure balls (one every 8.5 balls).', rr: 'Target ₹2–3 Cr. Game-breaking boundary hitter from ball one.' },
+      { rank: 3, name: 'Najibullah Zadran', role: 'LHB Middle Finisher', nat: 'AFG', balls: 206, baseSR: 85.9, pressSR: 155.3, deltaSR: 69.4, avg: 45.7, bps: 1.446, desc: 'Left-handed pressure specialist. Elevates by +69.4 SR under pressure with an elite 45.7 average.', rr: 'Target ₹1.5–2.5 Cr. Solves middle-overs spin counter as an LHB.' },
+      { rank: 4, name: 'Donovan Ferreira', role: 'WK-Finisher', nat: 'SA', balls: 234, baseSR: 120.0, pressSR: 178.6, deltaSR: 58.6, avg: 32.2, bps: 1.301, desc: 'Explosive 360-degree finisher with dual wicketkeeping utility. Strikes at 178.6 under pressure.', rr: 'Target ₹1.5–2 Cr. Flexible overseas squad depth & Impact Sub.' },
+      { rank: 5, name: 'Naman Dhir', role: 'Top/Middle Aggressor', nat: 'IND', balls: 242, baseSR: 147.6, pressSR: 189.7, deltaSR: 42.0, avg: 30.6, bps: 1.283, desc: 'Highest absolute pressure strike rate (189.7) among all qualified top-order batters.', rr: 'Target ₹3–5 Cr. Aggressive top-order option alongside Yashasvi Jaiswal.' },
+      { rank: 6, name: 'Tom Banton', role: 'WK-Opener', nat: 'ENG', balls: 117, baseSR: 137.5, pressSR: 176.1, deltaSR: 38.6, avg: 51.5, bps: 1.268, desc: 'Aggressive opening WK-batter. Elevates to 176.1 SR under pressure with a 51.5 average.', rr: 'Target ₹2–3 Cr. High-upside backup for overseas opening slot.' },
+      { rank: 7, name: 'Tristan Stubbs', role: 'Middle Finisher', nat: 'SA', balls: 701, baseSR: 122.3, pressSR: 159.3, deltaSR: 37.1, avg: 43.0, bps: 1.194, desc: 'Immense sample reliability over 701 pressure deliveries with 54 sixes.', rr: 'Target ₹6–8 Cr. High-volume middle-order engine.' },
+      { rank: 8, name: 'Tim David', role: 'Power Finisher', nat: 'AUS', balls: 808, baseSR: 154.6, pressSR: 176.7, deltaSR: 22.1, avg: 33.2, bps: 1.095, desc: '111 sixes in pressure balls — most in the dataset. Reliable death-overs execution.', rr: 'Target ₹8–10 Cr. Specialist boundary clearer.' },
+      { rank: 9, name: 'Suryakumar Yadav', role: '360 Anchor/Finisher', nat: 'IND', balls: 927, baseSR: 156.7, pressSR: 170.5, deltaSR: 13.8, avg: 37.6, bps: 0.990, desc: 'World benchmark 360-degree batter. 927 pressure balls proves sustained excellence.', rr: 'Target ₹14–16 Cr. Non-negotiable middle-order marquee pick.' },
+      { rank: 10, name: 'Shreyas Iyer', role: 'Knockout Specialist', nat: 'IND', balls: 580, baseSR: 137.6, pressSR: 170.9, deltaSR: 33.2, avg: 29.2, bps: 0.988, desc: '208.1 knockout strike rate leads all Indian batters in elimination games.', rr: 'Target ₹10–12 Cr. Proven IPL championship captain.' }
+    ];
+
+    const bowlersData = [
+      { rank: 1, name: 'Rashid Khan', role: 'Leg-Spin Anchor', nat: 'AFG', balls: 1182, baseEcon: 7.55, pressEcon: 7.38, deltaEcon: 0.17, wkts: 83, bps: 1.497, desc: 'Tightens economy from 7.55 to 7.38 under pressure over 1,182 balls with 83 wickets.', rr: 'Target ₹11–13 Cr. Universal spin controller for Jaipur pitch.' },
+      { rank: 2, name: 'Arshdeep Singh', role: 'Death Pace Spearhead', nat: 'IND', balls: 1267, baseEcon: 8.59, pressEcon: 8.88, deltaEcon: -0.29, wkts: 99, bps: 1.409, desc: '99 pressure wickets — single highest tally in 200,999 deliveries.', rr: 'Target ₹12–15 Cr. Solves RR death bowling leak at overs 17–20.' },
+      { rank: 3, name: 'Matheesha Pathirana', role: 'Slingy Yorker Ace', nat: 'SL', balls: 688, baseEcon: 8.24, pressEcon: 7.94, deltaEcon: 0.30, wkts: 62, bps: 1.315, desc: '7.94 pressure economy with 62 wickets (11.1 balls per wicket) and 45.2% dot balls.', rr: 'Target ₹8–10 Cr. Uncomfortable round-arm trajectory denies leverage.' },
+      { rank: 4, name: 'Jasprit Bumrah', role: 'All-Phase Benchmark', nat: 'IND', balls: 690, baseEcon: 7.17, pressEcon: 7.14, deltaEcon: 0.03, wkts: 56, bps: 1.189, desc: '7.14 pressure economy over 690 deliveries. Gold standard of run suppression.', rr: 'Target ₹16–18 Cr (Max). Reshapes opposing batting strategies.' },
+      { rank: 5, name: 'Akeal Hosein', role: 'Powerplay/Death Dart', nat: 'WI', balls: 280, baseEcon: 7.89, pressEcon: 6.09, deltaEcon: 1.80, wkts: 24, bps: 1.114, desc: 'Massive +1.80 economy tightening, conceding just 6.09 RPO under pressure.', rr: 'Target ₹1.5–2.5 Cr. Exceptional budget-friendly spin asset.' },
+      { rank: 6, name: 'Mitchell Santner', role: 'Left-Arm Controller', nat: 'NZ', balls: 585, baseEcon: 7.62, pressEcon: 6.64, deltaEcon: 0.98, wkts: 36, bps: 1.095, desc: 'Restricts to 6.64 RPO under pressure with 42.6% dot ball percentage.', rr: 'Target ₹2–3.5 Cr. Reliable middle-overs choke.' },
+      { rank: 7, name: 'Hasan Mahmud', role: 'Skiddy Death Pacer', nat: 'BAN', balls: 168, baseEcon: 8.34, pressEcon: 6.71, deltaEcon: 1.63, wkts: 17, bps: 1.062, desc: 'Skiddy death pacer with 9.88 balls per wicket and 6.71 pressure economy.', rr: 'Target ₹1–2 Cr. High-efficiency overseas pace depth.' },
+      { rank: 8, name: 'Varun Chakravarthy', role: 'Mystery Spin Trap', nat: 'IND', balls: 797, baseEcon: 7.88, pressEcon: 8.05, deltaEcon: -0.17, wkts: 58, bps: 1.060, desc: '58 pressure wickets with 42.2% dot ball rate in high-leverage scenarios.', rr: 'Target ₹6–8 Cr. Premier Indian mystery spin weapon.' },
+      { rank: 9, name: 'Wanindu Hasaranga', role: 'Strike Leg-Spinner', nat: 'SL', balls: 732, baseEcon: 7.93, pressEcon: 8.10, deltaEcon: -0.17, wkts: 62, bps: 1.055, desc: '62 pressure wickets at 11.8 balls per wicket. High strike-rate threat.', rr: 'Target ₹5–7 Cr. Proven wicket-taker in middle & death.' },
+      { rank: 10, name: 'Yuzvendra Chahal', role: 'Flight & Dip Master', nat: 'IND', balls: 946, baseEcon: 8.25, pressEcon: 8.52, deltaEcon: -0.27, wkts: 72, bps: 0.931, desc: '72 pressure wickets over 946 deliveries. Beloved RR franchise legend.', rr: 'Target ₹6–8 Cr (RTM/Retention target). Match-winning leg-spin.' }
+    ];
+
+    // Populate Batters Table
+    const bTbody = document.getElementById('batters-tbody');
+    battersData.forEach(p => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-white/5 cursor-pointer transition';
+      tr.onclick = () => selectBatter(p);
+      tr.innerHTML = `
+        <td class="p-3 text-center font-bold text-rrPinkLight">#${p.rank}</td>
+        <td class="p-3 font-semibold text-white">${p.name}</td>
+        <td class="p-3 text-center text-slate-300 font-mono">${p.nat}</td>
+        <td class="p-3 text-center text-slate-300">${p.balls}</td>
+        <td class="p-3 text-center text-slate-400">${p.baseSR.toFixed(1)}</td>
+        <td class="p-3 text-center font-bold text-white">${p.pressSR.toFixed(1)}</td>
+        <td class="p-3 text-center font-bold text-emerald-400">+${p.deltaSR.toFixed(1)}</td>
+        <td class="p-3 text-center text-slate-300">${p.avg.toFixed(1)}</td>
+        <td class="p-3 text-center font-extrabold text-rrPink">${p.bps.toFixed(3)}</td>
+      `;
+      bTbody.appendChild(tr);
+    });
+
+    // Populate Bowlers Table
+    const bwTbody = document.getElementById('bowlers-tbody');
+    bowlersData.forEach(p => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-white/5 cursor-pointer transition';
+      tr.onclick = () => selectBowler(p);
+      const dClass = p.deltaEcon > 0 ? 'text-emerald-400 font-bold' : 'text-slate-400';
+      tr.innerHTML = `
+        <td class="p-3 text-center font-bold text-blue-400">#${p.rank}</td>
+        <td class="p-3 font-semibold text-white">${p.name}</td>
+        <td class="p-3 text-center text-slate-300 font-mono">${p.nat}</td>
+        <td class="p-3 text-center text-slate-300">${p.balls}</td>
+        <td class="p-3 text-center text-slate-400">${p.baseEcon.toFixed(2)}</td>
+        <td class="p-3 text-center font-bold text-white">${p.pressEcon.toFixed(2)}</td>
+        <td class="p-3 text-center ${dClass}">${p.deltaEcon > 0 ? '+' : ''}${p.deltaEcon.toFixed(2)}</td>
+        <td class="p-3 text-center font-bold text-rrGold">${p.wkts}</td>
+        <td class="p-3 text-center font-extrabold text-blue-400">${p.bps.toFixed(3)}</td>
+      `;
+      bwTbody.appendChild(tr);
+    });
+
+    function selectBatter(p) {
+      document.getElementById('bat-card-name').innerText = p.name;
+      document.getElementById('bat-card-role').innerText = `${p.role} • ${p.nat}`;
+      document.getElementById('bat-card-sr').innerText = p.pressSR.toFixed(1);
+      document.getElementById('bat-card-delta').innerText = `+${p.deltaSR.toFixed(1)}`;
+      document.getElementById('bat-card-avg').innerText = p.avg.toFixed(1);
+      document.getElementById('bat-card-desc').innerText = p.desc;
+      document.getElementById('bat-card-rr').innerText = p.rr;
+    }
+
+    function selectBowler(p) {
+      document.getElementById('bowl-card-name').innerText = p.name;
+      document.getElementById('bowl-card-role').innerText = `${p.role} • ${p.nat}`;
+      document.getElementById('bowl-card-econ').innerText = p.pressEcon.toFixed(2);
+      document.getElementById('bowl-card-delta').innerText = `${p.deltaEcon > 0 ? '+' : ''}${p.deltaEcon.toFixed(2)}`;
+      document.getElementById('bowl-card-wkts').innerText = p.wkts;
+      document.getElementById('bowl-card-desc').innerText = p.desc;
+      document.getElementById('bowl-card-rr').innerText = p.rr;
+    }
+
+    // Tab Switching
+    function switchTab(tabId) {
+      const tabs = ['batters', 'bowlers', 'quadrants', 'squad', 'methodology'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-${t}`);
+        const content = document.getElementById(`content-${t}`);
+        if (t === tabId) {
+          btn.className = 'tab-active px-5 py-2.5 rounded-lg text-sm transition-all whitespace-nowrap shadow-md';
+          content.classList.remove('hidden');
+        } else {
+          btn.className = 'tab-inactive px-5 py-2.5 rounded-lg text-sm transition-all whitespace-nowrap';
+          content.classList.add('hidden');
+        }
+      });
+      if (tabId === 'quadrants' && !window.chartsInitialized) {
+        initCharts();
+        window.chartsInitialized = true;
+      }
+    }
+
+    // Chart.js Quadrants
+    function initCharts() {
+      // Batter Quadrant
+      new Chart(document.getElementById('batQuadrantChart'), {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            label: 'Top 10 Picks',
+            data: battersData.map(b => ({ x: b.baseSR, y: b.deltaSR, name: b.name })),
+            backgroundColor: '#D81B60',
+            borderColor: '#F59E0B',
+            borderWidth: 1.5,
+            pointRadius: 6,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.raw.name}: Base ${ctx.raw.x} SR, Delta +${ctx.raw.y}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: 'Baseline SR', color: '#94A3B8' },
+              grid: { color: 'rgba(255,255,255,0.08)' },
+              ticks: { color: '#94A3B8' }
+            },
+            y: {
+              title: { display: true, text: 'Clutch Delta SR', color: '#94A3B8' },
+              grid: { color: 'rgba(255,255,255,0.08)' },
+              ticks: { color: '#94A3B8' }
+            }
+          }
+        }
+      });
+
+      // Bowler Quadrant
+      new Chart(document.getElementById('bowlQuadrantChart'), {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            label: 'Top 10 Picks',
+            data: bowlersData.map(b => ({ x: b.baseEcon, y: b.deltaEcon, name: b.name })),
+            backgroundColor: '#2563EB',
+            borderColor: '#F59E0B',
+            borderWidth: 1.5,
+            pointRadius: 6,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.raw.name}: Base ${ctx.raw.x} Econ, Tightening ${ctx.raw.y}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: 'Baseline Economy', color: '#94A3B8' },
+              grid: { color: 'rgba(255,255,255,0.08)' },
+              ticks: { color: '#94A3B8' }
+            },
+            y: {
+              title: { display: true, text: 'Clutch Tightening (Base - Press)', color: '#94A3B8' },
+              grid: { color: 'rgba(255,255,255,0.08)' },
+              ticks: { color: '#94A3B8' }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
