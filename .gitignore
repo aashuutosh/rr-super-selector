@@ -15,3 +15,4 @@ Data Pack/
 # Node / Temp
 node_modules/
 .vscode/
+netlify_drop/
