@@ -576,69 +576,318 @@
     <!-- TAB 5: METHODOLOGY & LOGIC                 -->
     <!-- ========================================== -->
     <div id="content-methodology" class="hidden space-y-6">
+      
+      <!-- HERO HEADER -->
       <div class="glass-card p-4 sm:p-6 rounded-xl">
-        <h2 class="text-lg sm:text-xl font-bold font-display text-white">Mathematical Modeling Architecture &amp; Verification</h2>
-        <p class="text-[11px] sm:text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
-          Full algorithmic breakdown of the 5-dimensional pressure tagging, relative elevation formulation, sample threshold governance, and cross-match consistency checks.
-        </p>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-          <!-- Dimension 1 -->
-          <div class="bg-slate-900/60 p-4 rounded-xl border border-white/5">
-            <h3 class="text-sm font-bold text-rrPink flex items-center gap-2">
-              <span>1️⃣</span> 5 Empirical Pressure Triggers (69,734 Balls)
-            </h3>
-            <ul class="text-xs text-slate-300 mt-2 space-y-1.5 list-disc list-inside leading-relaxed">
-              <li><b>Death Overs:</b> Innings 1, Overs &ge; 17 (20,720 balls).</li>
-              <li><b>Live Chase Death:</b> Innings 2, Overs &ge; 17, RRR &le; 24 (10,643 balls).</li>
-              <li><b>High-Leverage Chases:</b> Innings 2, Overs 11–16, 9.0 &le; RRR &le; 20.0 (17,251 balls).</li>
-              <li><b>Top-Order Crisis:</b> Overs 1–10, 3+ wickets lost (19,415 balls).</li>
-              <li><b>Tournament Stakes:</b> Playoff / Knockout matches, Overs &ge; 11 (3,478 balls).</li>
-            </ul>
-          </div>
-
-          <!-- Dimension 2 -->
-          <div class="bg-slate-900/60 p-4 rounded-xl border border-white/5">
-            <h3 class="text-sm font-bold text-rrGold flex items-center gap-2">
-              <span>2️⃣</span> Batting Pressure Score (BPS) Formulation
-            </h3>
-            <div class="bg-black/40 p-2.5 rounded font-mono text-[11px] text-rrGold mt-2 leading-relaxed">
-              BPS = 0.25·Z(SR_press) + 0.15·Z(Avg_press) + 0.25·Z(&Delta;SR) + 0.10·Z(&Delta;Boundary%) + 0.15·Z(log(Vol)) - 0.10·Z(CV_innings)
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="bg-rrPink/20 text-rrPink text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-rrPink/30 uppercase">Algorithmic Governance</span>
+              <span class="text-xs text-slate-400">SupeRR Selector Season 2</span>
             </div>
-            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed">
-              Rewards batters who both maintain high absolute output and elevate significantly over their baseline, penalizing high match-to-match volatility via Coefficient of Variation.
+            <h2 class="text-lg sm:text-2xl font-bold font-display text-white mt-1">Methodology &amp; Mathematical Logic</h2>
+            <p class="text-[11px] sm:text-xs text-slate-300 mt-1 max-w-4xl leading-relaxed">
+              Evaluating players on raw career totals leads to severe auction misvaluations. Our architecture isolates high-pressure game states, standardizes heterogeneous metrics via Z-Scores, and measures performance relative to each player's baseline.
             </p>
           </div>
+          <div class="text-xs bg-slate-900/80 border border-white/10 px-3.5 py-2 rounded-xl flex items-center gap-2 flex-shrink-0">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-slate-300 font-medium">Standardized Population: <b>1,217 Players</b></span>
+          </div>
+        </div>
 
-          <!-- Dimension 3 -->
-          <div class="bg-slate-900/60 p-4 rounded-xl border border-white/5">
-            <h3 class="text-sm font-bold text-blue-400 flex items-center gap-2">
-              <span>3️⃣</span> Bowling Pressure Score (BPS_bowl) Formulation
-            </h3>
-            <div class="bg-black/40 p-2.5 rounded font-mono text-[11px] text-blue-300 mt-2 leading-relaxed">
-              BPS_bowl = -0.25·Z(Econ_press) + 0.20·Z(Wkts_press) + 0.15·Z(&Delta;Econ) + 0.15·Z(Dot%_press) - 0.15·Z(SR_bowl) + 0.10·Z(log(Vol))
+        <!-- STATISTICAL FOUNDATION EXPLAINER (WHY Z-SCORES?) -->
+        <div class="mt-5 p-4 rounded-xl bg-gradient-to-r from-slate-900/90 to-rrNavyCard border border-rrGold/30">
+          <div class="flex items-center gap-2 text-rrGold font-bold text-xs sm:text-sm">
+            <span>💡</span> Why Use Z-Scores? The Statistical Principle
+          </div>
+          <p class="text-xs text-slate-300 mt-1.5 leading-relaxed">
+            In cricket analytics, you cannot simply add a <b>Strike Rate of 170.0</b> to an <b>Average of 35.0</b> and a <b>Delivery Volume of 800</b>. Because their numerical scales differ radically, raw summation would allow strike rate or ball volume to distort the entire model. 
+            A <b>Z-Score</b> mathematically normalizes every metric into units of standard deviations from the dataset mean: 
+            <code class="bg-black/50 px-2 py-0.5 rounded text-rrGold font-mono text-[11px]">Z = (x - μ) / σ</code>. 
+            This ensures that a world-class performance in Economy, Average, or Wicket Taking carries its exact intended strategic weight.
+          </p>
+        </div>
+      </div>
+
+      <!-- 1. THE 5 EMPIRICAL PRESSURE TRIGGERS -->
+      <div class="glass-card p-4 sm:p-6 rounded-xl">
+        <h3 class="text-base sm:text-lg font-bold font-display text-white flex items-center gap-2">
+          <span>1️⃣</span> The 5 Empirical Pressure Dimensions (69,734 Balls &bull; 34.7% of Dataset)
+        </h3>
+        <p class="text-xs text-slate-400 mt-1">Rather than an arbitrary label, pressure is mapped to quantifiable high-stakes game states:</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-4">
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-white/5 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-bold text-rrPink flex items-center justify-between">
+                <span>Death Overs</span>
+                <span class="text-[10px] bg-white/5 px-1.5 py-0.5 rounded text-slate-400">Phase 1</span>
+              </div>
+              <div class="text-[11px] text-slate-300 mt-2 font-medium">Innings 1: Overs &ge; 17</div>
+              <p class="text-[10px] text-slate-400 mt-1 leading-snug">All-out attacking; batters swinging at every delivery.</p>
             </div>
-            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed">
-              Rewards run-rate suppression under pressure, wicket taking frequency, dot-ball dominance, and delivery sample stability.
-            </p>
+            <div class="mt-3 pt-2 border-t border-white/5 text-[10px] text-emerald-400 font-bold">20,720 Deliveries</div>
           </div>
 
-          <!-- Dimension 4 -->
-          <div class="bg-slate-900/60 p-4 rounded-xl border border-white/5">
-            <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
-              <span>4️⃣</span> Fair Comparisons &amp; Eligibility Governance
-            </h3>
-            <ul class="text-xs text-slate-300 mt-2 space-y-1.5 list-disc list-inside leading-relaxed">
-              <li><b>Sample Filters:</b> Minimum 60 pressure deliveries &amp; 180 total deliveries to eliminate low-sample noise.</li>
-              <li><b>IPL Auction Eligibility:</b> Excluded retired players (D. Karthik) and Pakistani nationals per BCCI auction policy.</li>
-              <li><b>Match-to-Match Consistency:</b> Innings score CV verified (Ashutosh: 0.792, Banton: 0.732, SKY: 0.833).</li>
-            </ul>
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-white/5 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-bold text-rrGold flex items-center justify-between">
+                <span>Live Chase Death</span>
+                <span class="text-[10px] bg-white/5 px-1.5 py-0.5 rounded text-slate-400">Phase 2</span>
+              </div>
+              <div class="text-[11px] text-slate-300 mt-2 font-medium">Innings 2: Overs &ge; 17</div>
+              <p class="text-[10px] text-slate-400 mt-1 leading-snug">Runs needed &gt; 0, RRR &le; 24. Match result on the line.</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-white/5 text-[10px] text-emerald-400 font-bold">10,643 Deliveries</div>
+          </div>
+
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-white/5 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-bold text-blue-400 flex items-center justify-between">
+                <span>High-RRR Chase</span>
+                <span class="text-[10px] bg-white/5 px-1.5 py-0.5 rounded text-slate-400">Phase 3</span>
+              </div>
+              <div class="text-[11px] text-slate-300 mt-2 font-medium">Innings 2: Overs 11–16</div>
+              <p class="text-[10px] text-slate-400 mt-1 leading-snug">Mounting chase pressure: 9.0 &le; RRR &le; 20.0.</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-white/5 text-[10px] text-emerald-400 font-bold">17,251 Deliveries</div>
+          </div>
+
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-white/5 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-bold text-rose-400 flex items-center justify-between">
+                <span>Top-Order Crisis</span>
+                <span class="text-[10px] bg-white/5 px-1.5 py-0.5 rounded text-slate-400">Phase 4</span>
+              </div>
+              <div class="text-[11px] text-slate-300 mt-2 font-medium">Overs 1–10: 3+ Wickets Down</div>
+              <p class="text-[10px] text-slate-400 mt-1 leading-snug">Severe collapse; team runs the risk of getting bowled out.</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-white/5 text-[10px] text-emerald-400 font-bold">19,415 Deliveries</div>
+          </div>
+
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-white/5 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-bold text-purple-400 flex items-center justify-between">
+                <span>Playoff Stakes</span>
+                <span class="text-[10px] bg-white/5 px-1.5 py-0.5 rounded text-slate-400">Phase 5</span>
+              </div>
+              <div class="text-[11px] text-slate-300 mt-2 font-medium">Knockouts: Overs &ge; 11</div>
+              <p class="text-[10px] text-slate-400 mt-1 leading-snug">Elimination consequences; mental pressure magnified.</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-white/5 text-[10px] text-emerald-400 font-bold">3,478 Deliveries</div>
           </div>
         </div>
       </div>
-    </div>
 
-  </main>
+      <!-- 2. BATTING FORMULA BREAKDOWN -->
+      <div class="glass-card p-4 sm:p-6 rounded-xl border border-rrPink/20">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold font-display text-white flex items-center gap-2">
+              <span>🏏</span> Batting Pressure Score (BPS) Formula Breakdown
+            </h3>
+            <p class="text-xs text-slate-400">What each mathematical component measures and its war room scouting significance:</p>
+          </div>
+          <span class="text-xs font-mono bg-rrPink/20 text-rrPink px-2.5 py-1 rounded-lg border border-rrPink/30 font-bold">Total Weight = 1.00</span>
+        </div>
+
+        <!-- Formula Banner -->
+        <div class="mt-3 p-3 bg-black/50 rounded-xl border border-white/10 font-mono text-xs sm:text-sm text-rrGold overflow-x-auto">
+          BPS = +0.25·Z(SR_press) + 0.15·Z(Avg_press) + 0.25·Z(&Delta;SR) + 0.10·Z(&Delta;Boundary%) + 0.15·Z(log(Vol)) - 0.10·Z(CV_innings)
+        </div>
+
+        <!-- Term-by-Term Table -->
+        <div class="mt-4 overflow-x-auto rounded-lg border border-white/10 table-container">
+          <table class="w-full text-left text-xs min-w-[640px]">
+            <thead class="bg-rrPink text-white font-semibold text-[11px]">
+              <tr>
+                <th class="p-2.5 w-24">Formula Term</th>
+                <th class="p-2.5 text-center w-16">Weight</th>
+                <th class="p-2.5 text-center w-12">Sign</th>
+                <th class="p-2.5">What It Represents</th>
+                <th class="p-2.5">Cricketing &amp; War Room Significance</th>
+                <th class="p-2.5">Player Exemplar</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5 text-[11px]">
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-rrGold">Z(SR_press)</td>
+                <td class="p-2.5 text-center font-bold text-white">25%</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">(+)</td>
+                <td class="p-2.5 font-semibold text-white">Absolute Scoring Velocity</td>
+                <td class="p-2.5 text-slate-300">Measures raw run scoring speed in crisis. When RRR climbs above 12, slow batting guarantees defeat.</td>
+                <td class="p-2.5 text-cyan-400 font-medium">Naman Dhir (189.7 SR)</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-rrGold">Z(Avg_press)</td>
+                <td class="p-2.5 text-center font-bold text-white">15%</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">(+)</td>
+                <td class="p-2.5 font-semibold text-white">Wicket Preservation</td>
+                <td class="p-2.5 text-slate-300">Guards against sloggers who hit one boundary and get out. Rewards finishing the innings not out.</td>
+                <td class="p-2.5 text-cyan-400 font-medium">Shashank Singh (63.4 Avg)</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-rrGold">Z(&Delta;SR)</td>
+                <td class="p-2.5 text-center font-bold text-emerald-400 font-extrabold">25%</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">(+)</td>
+                <td class="p-2.5 font-semibold text-white">Clutch Elevation Delta</td>
+                <td class="p-2.5 text-slate-300"><b>The core clutch metric:</b> Pressure SR minus Baseline SR. Identifies players who elevate when duress begins.</td>
+                <td class="p-2.5 text-cyan-400 font-medium">Ashutosh Sharma (+72.0 SR)</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-rrGold">Z(&Delta;Boundary%)</td>
+                <td class="p-2.5 text-center font-bold text-white">10%</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">(+)</td>
+                <td class="p-2.5 font-semibold text-white">Boundary Acceleration</td>
+                <td class="p-2.5 text-slate-300">Measures the increase in 4s and 6s per 100 balls. Singles and dot balls do not chase down 14 RRR death targets.</td>
+                <td class="p-2.5 text-cyan-400 font-medium">Tim David (111 Sixes)</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-rrGold">Z(log(Vol))</td>
+                <td class="p-2.5 text-center font-bold text-white">15%</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">(+)</td>
+                <td class="p-2.5 font-semibold text-white">Sample Size Durability</td>
+                <td class="p-2.5 text-slate-300">Logarithmic scaling rewards battle-tested volume (700+ balls) without blinding the model to emerging prodigies (150–300 balls).</td>
+                <td class="p-2.5 text-cyan-400 font-medium">Suryakumar Yadav (927 balls)</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-rose-400">- Z(CV_innings)</td>
+                <td class="p-2.5 text-center font-bold text-rose-400 font-extrabold">10%</td>
+                <td class="p-2.5 text-center text-rose-400 font-bold">(-) Penalty</td>
+                <td class="p-2.5 font-semibold text-white">Inconsistency Penalty</td>
+                <td class="p-2.5 text-slate-300">Coefficient of Variation (&sigma; / &mu;) of pressure innings scores. Penalizes one-hit wonders who score 80 once and fail 5 times.</td>
+                <td class="p-2.5 text-cyan-400 font-medium">Tom Banton (Low CV: 0.732)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. BOWLING FORMULA BREAKDOWN -->
+      <div class="glass-card p-4 sm:p-6 rounded-xl border border-blue-500/20">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold font-display text-white flex items-center gap-2">
+              <span>🎳</span> Bowling Pressure Score (BPS_bowl) Formula Breakdown
+            </h3>
+            <p class="text-xs text-slate-400">What each mathematical component measures and why signs (+/-) are assigned:</p>
+          </div>
+          <span class="text-xs font-mono bg-blue-500/20 text-blue-300 px-2.5 py-1 rounded-lg border border-blue-500/30 font-bold">Total Weight = 1.00</span>
+        </div>
+
+        <!-- Formula Banner -->
+        <div class="mt-3 p-3 bg-black/50 rounded-xl border border-white/10 font-mono text-xs sm:text-sm text-blue-300 overflow-x-auto">
+          BPS_bowl = -0.25·Z(Econ_press) + 0.20·Z(Wkts_press) + 0.15·Z(&Delta;Econ) + 0.15·Z(Dot%_press) - 0.15·Z(SR_bowl) + 0.10·Z(log(Vol))
+        </div>
+
+        <!-- Term-by-Term Table -->
+        <div class="mt-4 overflow-x-auto rounded-lg border border-white/10 table-container">
+          <table class="w-full text-left text-xs min-w-[640px]">
+            <thead class="bg-blue-600 text-white font-semibold text-[11px]">
+              <tr>
+                <th class="p-2.5 w-24">Formula Term</th>
+                <th class="p-2.5 text-center w-16">Weight</th>
+                <th class="p-2.5 text-center w-12">Sign</th>
+                <th class="p-2.5">What It Represents</th>
+                <th class="p-2.5">Cricketing &amp; War Room Significance</th>
+                <th class="p-2.5">Player Exemplar</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5 text-[11px]">
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-blue-300">- Z(Econ_press)</td>
+                <td class="p-2.5 text-center font-bold text-white">25%</td>
+                <td class="p-2.5 text-center text-rose-400 font-bold">(-) Inverted</td>
+                <td class="p-2.5 font-semibold text-white">Pressure Run Choking</td>
+                <td class="p-2.5 text-slate-300"><b>Negative weight:</b> Lower economy rate is strictly better. Restricting the batting team in overs 17–20 protects totals.</td>
+                <td class="p-2.5 text-emerald-400 font-medium">Jasprit Bumrah (7.14 Econ)</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-blue-300">+ Z(Wkts_press)</td>
+                <td class="p-2.5 text-center font-bold text-white">20%</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">(+)</td>
+                <td class="p-2.5 font-semibold text-white">Pressure Wicket Volume</td>
+                <td class="p-2.5 text-slate-300">Wickets in death overs disrupt batting momentum completely. A wicket taken is worth ~8 saved runs in value.</td>
+                <td class="p-2.5 text-emerald-400 font-medium">Arshdeep Singh (99 Wkts)</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-blue-300">+ Z(&Delta;Econ)</td>
+                <td class="p-2.5 text-center font-bold text-emerald-400 font-extrabold">15%</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">(+)</td>
+                <td class="p-2.5 font-semibold text-white">Clutch Tightening Delta</td>
+                <td class="p-2.5 text-slate-300">Base Economy minus Pressure Economy. Positive means the bowler tightens their run rate when pressure is highest.</td>
+                <td class="p-2.5 text-emerald-400 font-medium">Akeal Hosein (+1.80 Tightening)</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-blue-300">+ Z(Dot%_press)</td>
+                <td class="p-2.5 text-center font-bold text-white">15%</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">(+)</td>
+                <td class="p-2.5 font-semibold text-white">Dot Ball Pressure Engine</td>
+                <td class="p-2.5 text-slate-300">Dot balls in death overs force batters to play rash, low-percentage shots. The ultimate run-suppression tool.</td>
+                <td class="p-2.5 text-emerald-400 font-medium">Matheesha Pathirana (45.2% Dots)</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-blue-300">- Z(SR_bowl)</td>
+                <td class="p-2.5 text-center font-bold text-white">15%</td>
+                <td class="p-2.5 text-center text-rose-400 font-bold">(-) Inverted</td>
+                <td class="p-2.5 font-semibold text-white">Strike Rate (Balls/Wicket)</td>
+                <td class="p-2.5 text-slate-300"><b>Negative weight:</b> Fewer balls per dismissal is better. Measures how rapidly a bowler breaks dangerous partnerships.</td>
+                <td class="p-2.5 text-emerald-400 font-medium">Hasan Mahmud (9.88 Bowling SR)</td>
+              </tr>
+              <tr class="hover:bg-white/5">
+                <td class="p-2.5 font-mono font-bold text-blue-300">+ Z(log(Vol))</td>
+                <td class="p-2.5 text-center font-bold text-white">10%</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">(+)</td>
+                <td class="p-2.5 font-semibold text-white">Sample Durability</td>
+                <td class="p-2.5 text-slate-300">Protects against small-sample bowling outliers (e.g. 20 good balls in 1 game) by verifying repeated high-leverage execution.</td>
+                <td class="p-2.5 text-emerald-400 font-medium">Rashid Khan (1,182 balls)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. FAIR COMPARISONS & ELIGIBILITY RULES -->
+      <div class="glass-card p-4 sm:p-6 rounded-xl">
+        <h3 class="text-base sm:text-lg font-bold font-display text-white flex items-center gap-2">
+          <span>4️⃣</span> Fair Comparisons &amp; Auction Eligibility Rules
+        </h3>
+        <p class="text-xs text-slate-400 mt-1">Four strict governance constraints enforced to ensure recommendations translate directly to the IPL 2027 Auction:</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-white/5">
+            <div class="text-xs font-bold text-rrGold">Sample Size Thresholds</div>
+            <p class="text-[11px] text-slate-300 mt-1.5 leading-relaxed">
+              Minimum <b>60 pressure deliveries</b> and <b>180 total deliveries</b> required. Eliminates flash-in-the-pan anomalies.
+            </p>
+          </div>
+
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-white/5">
+            <div class="text-xs font-bold text-rrPink">IPL Auction Eligibility</div>
+            <p class="text-[11px] text-slate-300 mt-1.5 leading-relaxed">
+              Strictly filtered out Pakistani nationals (BCCI tournament policy) and retired players (e.g. Dinesh Karthik).
+            </p>
+          </div>
+
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-white/5">
+            <div class="text-xs font-bold text-cyan-400">Tactical Role Segmentation</div>
+            <p class="text-[11px] text-slate-300 mt-1.5 leading-relaxed">
+              Openers and death specialists evaluated through normalized relative lift, removing phase-bias between overs 1–6 and 17–20.
+            </p>
+          </div>
+
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-white/5">
+            <div class="text-xs font-bold text-emerald-400">Cross-Match Consistency</div>
+            <p class="text-[11px] text-slate-300 mt-1.5 leading-relaxed">
+              Innings score CV checked (&lt; 0.85) to ensure steady, predictable match-to-match reliability across a 14-game IPL season.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</main>
 
   <!-- FOOTER -->
   <footer class="border-t border-white/10 mt-12 py-6 text-center text-xs text-slate-500">
