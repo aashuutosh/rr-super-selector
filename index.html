@@ -864,6 +864,69 @@
         </div>
       </div>
 
+      <!-- INNINGS CV DEEP DIVE -->
+      <div class="glass-card p-4 sm:p-6 rounded-xl border border-rrGold/30">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold font-display text-white flex items-center gap-2">
+              <span>🎯</span> Deep Dive: What is Innings CV and Why Does It Matter?
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Quantifying match-to-match reliability to eliminate volatile "one-hit wonders":</p>
+          </div>
+          <span class="text-xs font-mono bg-rrGold/20 text-rrGold px-2.5 py-1 rounded-lg border border-rrGold/30 font-bold">Consistency Metric</span>
+        </div>
+
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Mathematical Formula -->
+          <div class="md:col-span-1 bg-black/50 p-4 rounded-xl border border-white/10 flex flex-col justify-between">
+            <div>
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Formula Definition</div>
+              <div class="mt-2 text-base font-bold font-mono text-rrGold">
+                CV_innings = &sigma; / &mu;
+              </div>
+              <p class="text-[11px] text-slate-300 mt-2 leading-relaxed">
+                <b>&sigma; (Sigma):</b> Standard deviation of runs scored across high-pressure innings.<br/>
+                <b>&mu; (Mu):</b> Mean (average) runs scored per pressure innings.
+              </p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-white/10 text-[10px] text-slate-400">
+              Integrated as <code class="text-rose-400 font-bold">-0.10 &middot; Z(CV_innings)</code> in BPS.
+            </div>
+          </div>
+
+          <!-- Batter A vs Batter B Example -->
+          <div class="md:col-span-2 bg-slate-900/60 p-4 rounded-xl border border-white/5 space-y-3">
+            <div class="text-[11px] font-bold text-white uppercase tracking-wider">Real-World Cricketing Intuition</div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="bg-rose-950/20 border border-rose-500/30 p-3 rounded-lg">
+                <div class="font-bold text-rose-400">❌ Batter A: The "Boom-or-Bust" Slogger</div>
+                <div class="font-mono text-[11px] text-slate-300 mt-1">Innings: 80, 0, 4, 0, 2, 0, 6</div>
+                <div class="text-[11px] text-slate-400 mt-1">Mean = 13.1 &bull; StdDev = 29.5</div>
+                <div class="text-xs font-bold text-rose-400 mt-1">CV = 2.25 (Extreme Volatility)</div>
+                <p class="text-[10px] text-slate-400 mt-1 leading-snug">Fails in 6 out of 7 matches, leaving the team stranded in critical run chases.</p>
+              </div>
+
+              <div class="bg-emerald-950/20 border border-emerald-500/30 p-3 rounded-lg">
+                <div class="font-bold text-emerald-400">✅ Batter B: The Reliable Clutch Anchor</div>
+                <div class="font-mono text-[11px] text-slate-300 mt-1">Innings: 28, 35, 22, 31, 26, 40, 24</div>
+                <div class="text-[11px] text-slate-400 mt-1">Mean = 29.4 &bull; StdDev = 6.1</div>
+                <div class="text-xs font-bold text-emerald-400 mt-1">CV = 0.21 (Elite Repeatability)</div>
+                <p class="text-[10px] text-slate-400 mt-1 leading-snug">Contributes every single match. Low-variance scores win long 14-game IPL seasons.</p>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-slate-300 leading-relaxed pt-1">
+              <b>Qualified Top Picks Consistency:</b> 
+              Tom Banton (<span class="text-emerald-400 font-bold">0.732</span>), 
+              Ashutosh Sharma (<span class="text-emerald-400 font-bold">0.792</span>), 
+              Suryakumar Yadav (<span class="text-emerald-400 font-bold">0.833</span>), 
+              Naman Dhir (<span class="text-emerald-400 font-bold">0.843</span>) all maintain sub-0.85 CVs, confirming proven match-to-match reliability.
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- 4. FAIR COMPARISONS & ELIGIBILITY RULES -->
       <div class="glass-card p-4 sm:p-6 rounded-xl">
         <h3 class="text-base sm:text-lg font-bold font-display text-white flex items-center gap-2">
